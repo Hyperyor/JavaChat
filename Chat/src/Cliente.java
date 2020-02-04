@@ -37,11 +37,19 @@ public class Cliente extends javax.swing.JFrame {
         textAreaMensaje = new javax.swing.JTextArea();
         panelBotonEnviar = new javax.swing.JPanel();
         botonEnviar = new javax.swing.JButton();
+        panelConexion = new javax.swing.JPanel();
+        jLabelInicioSesion = new javax.swing.JLabel();
+        panelBotones = new javax.swing.JPanel();
+        jButtonAceptar = new javax.swing.JButton();
+        panelDatos = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabelUsuario = new javax.swing.JLabel();
+        jTextFieldUsuario = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         menuPrincipal = new javax.swing.JMenuBar();
         menuConexion = new javax.swing.JMenu();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 400));
 
         panelChat.setLayout(new java.awt.BorderLayout());
 
@@ -83,7 +91,88 @@ public class Cliente extends javax.swing.JFrame {
 
         panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
 
-        getContentPane().add(panelChat, java.awt.BorderLayout.CENTER);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 400));
+
+        panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
+        panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
+        panelConexion.setLayout(new java.awt.BorderLayout());
+
+        jLabelInicioSesion.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabelInicioSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelInicioSesion.setText("INICIAR SESIÓN");
+        panelConexion.add(jLabelInicioSesion, java.awt.BorderLayout.NORTH);
+
+        panelBotones.setLayout(new java.awt.GridLayout());
+
+        jButtonAceptar.setText("Aceptar");
+        panelBotones.add(jButtonAceptar);
+
+        panelConexion.add(panelBotones, java.awt.BorderLayout.SOUTH);
+
+        panelDatos.setLayout(new java.awt.GridLayout(4, 2));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 84, Short.MAX_VALUE)
+        );
+
+        panelDatos.add(jPanel3);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 84, Short.MAX_VALUE)
+        );
+
+        panelDatos.add(jPanel4);
+
+        jLabelUsuario.setText("Usuario");
+        panelDatos.add(jLabelUsuario);
+
+        jTextFieldUsuario.setText("postgres");
+        panelDatos.add(jTextFieldUsuario);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 84, Short.MAX_VALUE)
+        );
+
+        panelDatos.add(jPanel5);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 84, Short.MAX_VALUE)
+        );
+
+        panelDatos.add(jPanel6);
+
+        panelConexion.add(panelDatos, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(panelConexion, java.awt.BorderLayout.CENTER);
 
         menuConexion.setText("Conexión");
         menuPrincipal.add(menuConexion);
@@ -100,7 +189,7 @@ public class Cliente extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -130,14 +219,25 @@ public class Cliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonEnviar;
+    private javax.swing.JButton jButtonAceptar;
+    private javax.swing.JLabel jLabelInicioSesion;
+    private javax.swing.JLabel jLabelUsuario;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextFieldUsuario;
     private javax.swing.JList<String> listadoUsuarios;
     private javax.swing.JMenu menuConexion;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JPanel panelBotonEnviar;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelChat;
+    private javax.swing.JPanel panelConexion;
+    private javax.swing.JPanel panelDatos;
     private javax.swing.JPanel panelMensaje;
     private javax.swing.JPanel panelUsuarios;
     private javax.swing.JTextArea textAreaChat;
