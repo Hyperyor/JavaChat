@@ -1,3 +1,15 @@
+package Usuario;
+
+import Modelo.User;
+import java.awt.Color;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPanel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,11 +22,45 @@
  */
 public class Cliente extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Cliente
-     */
+    static final String HOST = "localhost";
+    static final int PUERTO = 6000;
+    
+    private static boolean conectado = false;
+    
+    private static User datosUsuario;
+    
+    private static HiloCliente hiloConversacion;
+    
     public Cliente() {
         initComponents();
+        datosUsuario = new User();
+        checkConnection();
+    }
+    
+    private void checkConnection()
+    {
+        if(!conectado)
+        {
+            menuConexion.setForeground(Color.RED);
+            botonDesconectarse.setEnabled(false);
+            botonConectarse.setEnabled(true);
+        }
+        else
+        {
+            menuConexion.setForeground(Color.GREEN);
+            botonDesconectarse.setEnabled(true);
+            botonConectarse.setEnabled(false);
+        }
+    }
+    
+    public User getUser()
+    {
+        return datosUsuario;
+    }
+    
+    private void cambiarContenedor(JPanel aux){
+        this.setContentPane(aux);
+        pack();
     }
 
     /**
@@ -50,6 +96,8 @@ public class Cliente extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         menuPrincipal = new javax.swing.JMenuBar();
         menuConexion = new javax.swing.JMenu();
+        botonConectarse = new javax.swing.JMenuItem();
+        botonDesconectarse = new javax.swing.JMenuItem();
 
         panelChat.setLayout(new java.awt.BorderLayout());
 
@@ -92,7 +140,7 @@ public class Cliente extends javax.swing.JFrame {
         panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 400));
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
         panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
@@ -103,9 +151,14 @@ public class Cliente extends javax.swing.JFrame {
         jLabelInicioSesion.setText("INICIAR SESIÓN");
         panelConexion.add(jLabelInicioSesion, java.awt.BorderLayout.NORTH);
 
-        panelBotones.setLayout(new java.awt.GridLayout());
+        panelBotones.setLayout(new java.awt.GridLayout(1, 0));
 
         jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAceptarActionPerformed(evt);
+            }
+        });
         panelBotones.add(jButtonAceptar);
 
         panelConexion.add(panelBotones, java.awt.BorderLayout.SOUTH);
@@ -116,11 +169,11 @@ public class Cliente extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 375, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
         );
 
         panelDatos.add(jPanel3);
@@ -129,30 +182,28 @@ public class Cliente extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 375, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
         );
 
         panelDatos.add(jPanel4);
 
         jLabelUsuario.setText("Usuario");
         panelDatos.add(jLabelUsuario);
-
-        jTextFieldUsuario.setText("postgres");
         panelDatos.add(jTextFieldUsuario);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 375, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
         );
 
         panelDatos.add(jPanel5);
@@ -161,11 +212,11 @@ public class Cliente extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 375, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
         );
 
         panelDatos.add(jPanel6);
@@ -175,12 +226,75 @@ public class Cliente extends javax.swing.JFrame {
         getContentPane().add(panelConexion, java.awt.BorderLayout.CENTER);
 
         menuConexion.setText("Conexión");
+
+        botonConectarse.setText("Conectarse");
+        botonConectarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonConectarseActionPerformed(evt);
+            }
+        });
+        menuConexion.add(botonConectarse);
+
+        botonDesconectarse.setText("Desconectarse");
+        botonDesconectarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDesconectarseActionPerformed(evt);
+            }
+        });
+        menuConexion.add(botonDesconectarse);
+
         menuPrincipal.add(menuConexion);
 
         setJMenuBar(menuPrincipal);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonConectarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConectarseActionPerformed
+        cambiarContenedor(panelConexion);
+        checkConnection();
+    }//GEN-LAST:event_botonConectarseActionPerformed
+
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+        
+        if(!jTextFieldUsuario.getText().equals(""))
+        {
+            //cambiamos a chat
+            cambiarContenedor(panelChat);
+            
+            //realizar la conexion con el servidor
+            Socket cliente = null;
+            try {
+                //tomamos el nombre de usuario del textfield
+                datosUsuario.setNombre(jTextFieldUsuario.getText());
+                //creamos el socket
+                cliente = new Socket(HOST, PUERTO);
+                //creamos el hilo
+                hiloConversacion = new HiloCliente(this, cliente);
+                hiloConversacion.start();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            conectado = true;
+            
+            checkConnection();
+        }
+        else
+        {
+            //mostramos mensaje de error
+        }
+    }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void botonDesconectarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDesconectarseActionPerformed
+        cambiarContenedor(panelConexion);
+        //falta desconectar del servidor
+        conectado = false;
+        checkConnection();
+        hiloConversacion.desconectar();
+    }//GEN-LAST:event_botonDesconectarseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,6 +332,8 @@ public class Cliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem botonConectarse;
+    private javax.swing.JMenuItem botonDesconectarse;
     private javax.swing.JButton botonEnviar;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JLabel jLabelInicioSesion;
