@@ -1,5 +1,6 @@
 package Usuario;
 
+import Modelo.Mensaje;
 import Modelo.User;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,6 +24,7 @@ public class HiloCliente extends Thread {
 
         //creamos el flujo de salida
         flujoSalida = new ObjectOutputStream(socket.getOutputStream());
+        flujoEntrada = new ObjectInputStream(socket.getInputStream());
         
         //mandamos los datos del cliente
         flujoSalida.writeObject(padre.getUser());// enviando el objeto
@@ -36,18 +38,23 @@ public class HiloCliente extends Thread {
             
             while(escuchando)
             {
+                Object obj = flujoEntrada.readObject();
                 
+                if(obj instanceof String)
+                {
+                    String men = obj.toString();
+                    
+                    padre.addMessage(men); //System.out.println(men);
+                }
             }
-            
-            
             
             System.out.println("Desconexion del usuario");
 
             flujoEntrada.close();
             flujoSalida.close();
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+           
         }
     }
     
@@ -59,6 +66,20 @@ public class HiloCliente extends Thread {
         try
         {
             flujoSalida.writeObject("salimos");
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        
+    }
+    
+    public synchronized void enviar(String user, String msg) 
+    {
+        Mensaje j = new Mensaje(user, msg);
+        try
+        {
+            flujoSalida.writeObject(j);
         }
         catch(IOException ex)
         {

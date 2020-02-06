@@ -53,6 +53,11 @@ public class Cliente extends javax.swing.JFrame {
         }
     }
     
+    public void addMessage(String msg)
+    {
+        textAreaChat.setText(textAreaChat.getText() + "\n" + msg);
+    }
+    
     public User getUser()
     {
         return datosUsuario;
@@ -61,6 +66,12 @@ public class Cliente extends javax.swing.JFrame {
     private void cambiarContenedor(JPanel aux){
         this.setContentPane(aux);
         pack();
+    }
+    
+    private void reset()
+    {
+        textAreaChat.setText("");
+        textAreaMensaje.setText("");
     }
 
     /**
@@ -99,6 +110,9 @@ public class Cliente extends javax.swing.JFrame {
         botonConectarse = new javax.swing.JMenuItem();
         botonDesconectarse = new javax.swing.JMenuItem();
 
+        panelChat.setMaximumSize(new java.awt.Dimension(750, 550));
+        panelChat.setMinimumSize(new java.awt.Dimension(750, 550));
+        panelChat.setPreferredSize(new java.awt.Dimension(750, 550));
         panelChat.setLayout(new java.awt.BorderLayout());
 
         textAreaChat.setEditable(false);
@@ -133,6 +147,11 @@ public class Cliente extends javax.swing.JFrame {
         panelBotonEnviar.setLayout(new java.awt.GridLayout(2, 1));
 
         botonEnviar.setText("   Enviar   ");
+        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnviarActionPerformed(evt);
+            }
+        });
         panelBotonEnviar.add(botonEnviar);
 
         panelMensaje.add(panelBotonEnviar, java.awt.BorderLayout.LINE_END);
@@ -140,7 +159,7 @@ public class Cliente extends javax.swing.JFrame {
         panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.BorderLayout());
+        setMaximumSize(new java.awt.Dimension(750, 550));
 
         panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
         panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
@@ -294,7 +313,17 @@ public class Cliente extends javax.swing.JFrame {
         conectado = false;
         checkConnection();
         hiloConversacion.desconectar();
+        reset();
     }//GEN-LAST:event_botonDesconectarseActionPerformed
+
+    private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
+        if(!textAreaMensaje.getText().equals(""))
+        {
+            hiloConversacion.enviar(datosUsuario.getNombre(), textAreaMensaje.getText());
+            textAreaMensaje.setText("");
+        }
+        
+    }//GEN-LAST:event_botonEnviarActionPerformed
 
     /**
      * @param args the command line arguments
