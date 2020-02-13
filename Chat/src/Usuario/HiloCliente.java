@@ -1,6 +1,7 @@
 package Usuario;
 
 import Modelo.Mensaje;
+import Modelo.Nombres;
 import Modelo.User;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +48,23 @@ public class HiloCliente extends Thread {
                     
                     padre.addMessage(men); //System.out.println(men);
                 }
+                
+                if (obj instanceof ArrayList)
+                {
+                    //añadir los nombres al jlist
+
+                    ArrayList n = (ArrayList)obj;
+                    
+//                    for (int i = 0; i < n.getNombres().size(); i++) {
+//                        
+//                        System.out.println("\n" + n.getNombres().get(i));
+//                        
+//                    }
+
+                    padre.mostrarUsuarios(n);
+
+                }
+                
             }
             
             System.out.println("Desconexion del usuario");

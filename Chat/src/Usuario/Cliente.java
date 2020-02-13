@@ -1,14 +1,18 @@
 package Usuario;
 
+import Modelo.Nombres;
 import Modelo.User;
 import java.awt.Color;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,10 +35,14 @@ public class Cliente extends javax.swing.JFrame {
     
     private static HiloCliente hiloConversacion;
     
+    private ListModel model;
+    
     public Cliente() {
         initComponents();
         datosUsuario = new User();
         checkConnection();
+        
+        model =  listadoUsuarios.getModel();
     }
     
     private void checkConnection()
@@ -73,6 +81,21 @@ public class Cliente extends javax.swing.JFrame {
         textAreaChat.setText("");
         textAreaMensaje.setText("");
     }
+    
+    public void mostrarUsuarios(ArrayList n)
+    {
+        String[] rows = new String[n.size()];
+        
+        for (int i = 0; i < n.size(); i++) {
+            
+            rows[i] = n.get(i).toString();
+
+        }
+        
+        
+        listadoUsuarios.setListData(rows);
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,17 +106,6 @@ public class Cliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelChat = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textAreaChat = new javax.swing.JTextArea();
-        panelUsuarios = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        listadoUsuarios = new javax.swing.JList<>();
-        panelMensaje = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaMensaje = new javax.swing.JTextArea();
-        panelBotonEnviar = new javax.swing.JPanel();
-        botonEnviar = new javax.swing.JButton();
         panelConexion = new javax.swing.JPanel();
         jLabelInicioSesion = new javax.swing.JLabel();
         panelBotones = new javax.swing.JPanel();
@@ -105,62 +117,21 @@ public class Cliente extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        panelChat = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textAreaChat = new javax.swing.JTextArea();
+        panelUsuarios = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listadoUsuarios = new javax.swing.JList<>();
+        panelMensaje = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textAreaMensaje = new javax.swing.JTextArea();
+        panelBotonEnviar = new javax.swing.JPanel();
+        botonEnviar = new javax.swing.JButton();
         menuPrincipal = new javax.swing.JMenuBar();
         menuConexion = new javax.swing.JMenu();
         botonConectarse = new javax.swing.JMenuItem();
         botonDesconectarse = new javax.swing.JMenuItem();
-
-        panelChat.setMaximumSize(new java.awt.Dimension(750, 550));
-        panelChat.setMinimumSize(new java.awt.Dimension(750, 550));
-        panelChat.setPreferredSize(new java.awt.Dimension(750, 550));
-        panelChat.setLayout(new java.awt.BorderLayout());
-
-        textAreaChat.setEditable(false);
-        textAreaChat.setColumns(20);
-        textAreaChat.setRows(5);
-        jScrollPane2.setViewportView(textAreaChat);
-
-        panelChat.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        panelUsuarios.setLayout(new java.awt.BorderLayout());
-
-        listadoUsuarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        listadoUsuarios.setPreferredSize(new java.awt.Dimension(99, 6));
-        jScrollPane3.setViewportView(listadoUsuarios);
-
-        panelUsuarios.add(jScrollPane3, java.awt.BorderLayout.CENTER);
-
-        panelChat.add(panelUsuarios, java.awt.BorderLayout.LINE_END);
-
-        panelMensaje.setLayout(new java.awt.BorderLayout());
-
-        textAreaMensaje.setColumns(20);
-        textAreaMensaje.setRows(5);
-        jScrollPane1.setViewportView(textAreaMensaje);
-
-        panelMensaje.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        panelBotonEnviar.setLayout(new java.awt.GridLayout(2, 1));
-
-        botonEnviar.setText("   Enviar   ");
-        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEnviarActionPerformed(evt);
-            }
-        });
-        panelBotonEnviar.add(botonEnviar);
-
-        panelMensaje.add(panelBotonEnviar, java.awt.BorderLayout.LINE_END);
-
-        panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(750, 550));
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
         panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
@@ -243,7 +214,55 @@ public class Cliente extends javax.swing.JFrame {
 
         panelConexion.add(panelDatos, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(panelConexion, java.awt.BorderLayout.CENTER);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(750, 550));
+        getContentPane().setLayout(new java.awt.BorderLayout());
+
+        panelChat.setMaximumSize(new java.awt.Dimension(750, 550));
+        panelChat.setMinimumSize(new java.awt.Dimension(750, 550));
+        panelChat.setPreferredSize(new java.awt.Dimension(750, 550));
+        panelChat.setLayout(new java.awt.BorderLayout());
+
+        textAreaChat.setEditable(false);
+        textAreaChat.setColumns(20);
+        textAreaChat.setRows(5);
+        jScrollPane2.setViewportView(textAreaChat);
+
+        panelChat.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        panelUsuarios.setLayout(new java.awt.BorderLayout());
+
+        listadoUsuarios.setFocusable(false);
+        listadoUsuarios.setPreferredSize(new java.awt.Dimension(99, 6));
+        jScrollPane3.setViewportView(listadoUsuarios);
+
+        panelUsuarios.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        panelChat.add(panelUsuarios, java.awt.BorderLayout.LINE_END);
+
+        panelMensaje.setLayout(new java.awt.BorderLayout());
+
+        textAreaMensaje.setColumns(20);
+        textAreaMensaje.setRows(5);
+        jScrollPane1.setViewportView(textAreaMensaje);
+
+        panelMensaje.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        panelBotonEnviar.setLayout(new java.awt.GridLayout(2, 1));
+
+        botonEnviar.setText("   Enviar   ");
+        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnviarActionPerformed(evt);
+            }
+        });
+        panelBotonEnviar.add(botonEnviar);
+
+        panelMensaje.add(panelBotonEnviar, java.awt.BorderLayout.LINE_END);
+
+        panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(panelChat, java.awt.BorderLayout.CENTER);
 
         menuConexion.setText("Conexión");
 

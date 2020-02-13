@@ -1,6 +1,7 @@
 package Servidor;
 
 import Modelo.Mensaje;
+import Modelo.Nombres;
 import Modelo.User;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -24,12 +26,14 @@ public class HiloServidor extends Thread implements Observer{
     private String mensaje = "";
     
     private LlegadaMensaje rebote;
+    private ListadoClientes listado;
     
     private User datosUsuario;
 
-    public HiloServidor(Socket s, LlegadaMensaje men) throws IOException {
+    public HiloServidor(Socket s, LlegadaMensaje men, ListadoClientes nombres) throws IOException {
         this.socket = s;
         rebote = men;
+        listado = nombres;
         // se crean los flujos de entrada y salida
         //fsalida = new DataOutputStream(s.getOutputStream());
         fentrada = new ObjectInputStream(socket.getInputStream());
@@ -53,6 +57,8 @@ public class HiloServidor extends Thread implements Observer{
 
                     rebote.nuevoMensaje(" ********** Servidor dice: "+ "\n" + 
                             " se ha conectado " + datosUsuario.getNombre() + " *********** \n");
+                    
+                    listado.anadirUsusario(datosUsuario.getNombre());
                 }
                 else
                 {
@@ -61,6 +67,8 @@ public class HiloServidor extends Thread implements Observer{
                     if(obj instanceof String)
                     {
                         escuchando = false;
+                        
+                        listado.borrarUsuario(datosUsuario.getNombre());
                     }
                     else
                     {
@@ -80,6 +88,7 @@ public class HiloServidor extends Thread implements Observer{
             fentrada.close();
             socket.close();
             rebote.deleteObserver(this);
+            listado.deleteObserver(this);
             
             rebote.nuevoMensaje(" ********** Servidor dice: "+ "\n" + 
                             " se ha desconectado " + datosUsuario.getNombre() + " *********** \n");
@@ -92,12 +101,32 @@ public class HiloServidor extends Thread implements Observer{
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        mensaje = arg.toString();
-        try {
-            fsalida.writeObject(mensaje);// enviando el objeto
-        } catch (IOException ex) {
-            Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+    public synchronized void update(Observable o, Object arg) {
+        
+        if(arg instanceof String)
+        {
+            mensaje = arg.toString();
+            try {
+                fsalida.writeObject(mensaje);// enviando el objeto
+            } catch (IOException ex) {
+                Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else
+        {
+            //Nombres nombres = (Nombres)arg;
+            ArrayList lista1 = (ArrayList) arg;
+            ArrayList lista = new ArrayList(lista1);
+//            System.out.println("\nDatos que recibe el cliente " + datosUsuario.getNombre());
+//            for (int i = 0; i < nombres.getNombres().size(); i++) {
+//                System.out.println("\n" + nombres.getNombres().get(i));
+//            }
+            
+            try {
+                fsalida.writeObject(lista);// enviando el objeto
+            } catch (IOException ex) {
+                Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

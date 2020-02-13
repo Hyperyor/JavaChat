@@ -13,6 +13,7 @@ public class Servidor {
     public static void main(String[] args) {
         int puerto = 6000; // puerto
         LlegadaMensaje mensajes = new LlegadaMensaje();
+        ListadoClientes nombreClientes = new ListadoClientes();
 
         try {
             ServerSocket servidor = new ServerSocket(puerto);
@@ -21,9 +22,10 @@ public class Servidor {
             while (true) {
                 Socket cliente = servidor.accept();
                 // Esperando a un cliente
-                HiloServidor hilo = new HiloServidor(cliente, mensajes);
+                HiloServidor hilo = new HiloServidor(cliente, mensajes, nombreClientes);
                 hilo.start();
                 mensajes.addObserver(hilo);
+                nombreClientes.addObserver(hilo);
                 listadoHilos.add(hilo);
             }
         } catch (Exception e) {
