@@ -160,6 +160,7 @@ public class Cliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(750, 550));
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
         panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
