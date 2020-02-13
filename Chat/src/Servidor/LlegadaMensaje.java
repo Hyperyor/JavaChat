@@ -16,7 +16,11 @@ public class LlegadaMensaje extends Observable{
     public void nuevoMensaje(String mensaje)
     {
         this.setChanged();
+        
+        
         notifyObservers(mensaje);
+        
+        
     }
     
 }

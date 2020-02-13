@@ -83,17 +83,7 @@ public class HiloServidor extends Thread implements Observer{
                
             }
             
-            System.out.println("Fin de comunicación con socket " + socket.toString());
-            fsalida.close();
-            fentrada.close();
-            socket.close();
-            rebote.deleteObserver(this);
-            listado.deleteObserver(this);
-            
-            rebote.nuevoMensaje(" ********** Servidor dice: "+ "\n" + 
-                            " se ha desconectado " + datosUsuario.getNombre() + " *********** \n");
-            
-            Servidor.eliminarHilo(this);
+            eliminar();
             
         } catch (Exception e) {
             
@@ -102,31 +92,56 @@ public class HiloServidor extends Thread implements Observer{
 
     @Override
     public synchronized void update(Observable o, Object arg) {
-        
-        if(arg instanceof String)
+        try
         {
-            mensaje = arg.toString();
-            try {
-                fsalida.writeObject(mensaje);// enviando el objeto
-            } catch (IOException ex) {
-                Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+            
+        
+            if(arg instanceof String)
+            {
+                mensaje = arg.toString();
+                try {
+                    fsalida.writeObject(mensaje);// enviando el objeto
+                } catch (IOException ex) {
+                    Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else
+            {
+                //Nombres nombres = (Nombres)arg;
+                ArrayList lista1 = (ArrayList) arg;
+                ArrayList lista = new ArrayList(lista1);
+    //            System.out.println("\nDatos que recibe el cliente " + datosUsuario.getNombre());
+    //            for (int i = 0; i < nombres.getNombres().size(); i++) {
+    //                System.out.println("\n" + nombres.getNombres().get(i));
+    //            }
+
+                try {
+                    fsalida.writeObject(lista);// enviando el objeto
+                } catch (IOException ex) {
+                    Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
-        else
+        catch(Exception ex)
         {
-            //Nombres nombres = (Nombres)arg;
-            ArrayList lista1 = (ArrayList) arg;
-            ArrayList lista = new ArrayList(lista1);
-//            System.out.println("\nDatos que recibe el cliente " + datosUsuario.getNombre());
-//            for (int i = 0; i < nombres.getNombres().size(); i++) {
-//                System.out.println("\n" + nombres.getNombres().get(i));
-//            }
             
-            try {
-                fsalida.writeObject(lista);// enviando el objeto
-            } catch (IOException ex) {
-                Logger.getLogger(HiloServidor.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
+        
+    private void eliminar() throws IOException
+    {
+        System.out.println("Fin de comunicación con socket " + socket.toString());
+        fsalida.close();
+        fentrada.close();
+        socket.close();
+        rebote.deleteObserver(this);
+        listado.deleteObserver(this);
+
+        rebote.nuevoMensaje(" ********** Servidor dice: "+ "\n" + 
+                        " se ha desconectado " + datosUsuario.getNombre() + " *********** \n");
+
+        Servidor.eliminarHilo(this);
+    }
+                    
+             
 }

@@ -32,7 +32,11 @@ public class ListadoClientes extends Observable{
         
         this.setChanged();
         
+        
         notifyObservers(listaNombres);
+        
+        
+        
     }
     
     public synchronized void borrarUsuario(String nombre)
@@ -43,7 +47,9 @@ public class ListadoClientes extends Observable{
         
         this.setChanged();
         
+        
         notifyObservers(listaNombres);
+        
     }
     
 }

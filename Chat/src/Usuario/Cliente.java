@@ -106,17 +106,6 @@ public class Cliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelConexion = new javax.swing.JPanel();
-        jLabelInicioSesion = new javax.swing.JLabel();
-        panelBotones = new javax.swing.JPanel();
-        jButtonAceptar = new javax.swing.JButton();
-        panelDatos = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabelUsuario = new javax.swing.JLabel();
-        jTextFieldUsuario = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
         panelChat = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         textAreaChat = new javax.swing.JTextArea();
@@ -128,10 +117,79 @@ public class Cliente extends javax.swing.JFrame {
         textAreaMensaje = new javax.swing.JTextArea();
         panelBotonEnviar = new javax.swing.JPanel();
         botonEnviar = new javax.swing.JButton();
+        panelConexion = new javax.swing.JPanel();
+        jLabelInicioSesion = new javax.swing.JLabel();
+        panelBotones = new javax.swing.JPanel();
+        jButtonAceptar = new javax.swing.JButton();
+        panelDatos = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabelUsuario = new javax.swing.JLabel();
+        jTextFieldUsuario = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         menuPrincipal = new javax.swing.JMenuBar();
         menuConexion = new javax.swing.JMenu();
         botonConectarse = new javax.swing.JMenuItem();
         botonDesconectarse = new javax.swing.JMenuItem();
+
+        panelChat.setMaximumSize(new java.awt.Dimension(750, 550));
+        panelChat.setMinimumSize(new java.awt.Dimension(750, 550));
+        panelChat.setPreferredSize(new java.awt.Dimension(750, 550));
+        panelChat.setLayout(new java.awt.BorderLayout());
+
+        textAreaChat.setEditable(false);
+        textAreaChat.setColumns(20);
+        textAreaChat.setRows(5);
+        jScrollPane2.setViewportView(textAreaChat);
+
+        panelChat.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        panelUsuarios.setLayout(new java.awt.BorderLayout());
+
+        listadoUsuarios.setFocusable(false);
+        listadoUsuarios.setPreferredSize(new java.awt.Dimension(99, 6));
+        listadoUsuarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                elementSelected(evt);
+            }
+        });
+        jScrollPane3.setViewportView(listadoUsuarios);
+
+        panelUsuarios.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        panelChat.add(panelUsuarios, java.awt.BorderLayout.LINE_END);
+
+        panelMensaje.setLayout(new java.awt.BorderLayout());
+
+        textAreaMensaje.setColumns(20);
+        textAreaMensaje.setRows(5);
+        jScrollPane1.setViewportView(textAreaMensaje);
+
+        panelMensaje.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        panelBotonEnviar.setLayout(new java.awt.GridLayout(2, 1));
+
+        botonEnviar.setText("   Enviar   ");
+        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnviarActionPerformed(evt);
+            }
+        });
+        panelBotonEnviar.add(botonEnviar);
+
+        panelMensaje.add(panelBotonEnviar, java.awt.BorderLayout.LINE_END);
+
+        panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(750, 550));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         panelConexion.setMaximumSize(new java.awt.Dimension(750, 550));
         panelConexion.setMinimumSize(new java.awt.Dimension(750, 550));
@@ -214,55 +272,7 @@ public class Cliente extends javax.swing.JFrame {
 
         panelConexion.add(panelDatos, java.awt.BorderLayout.CENTER);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(750, 550));
-        getContentPane().setLayout(new java.awt.BorderLayout());
-
-        panelChat.setMaximumSize(new java.awt.Dimension(750, 550));
-        panelChat.setMinimumSize(new java.awt.Dimension(750, 550));
-        panelChat.setPreferredSize(new java.awt.Dimension(750, 550));
-        panelChat.setLayout(new java.awt.BorderLayout());
-
-        textAreaChat.setEditable(false);
-        textAreaChat.setColumns(20);
-        textAreaChat.setRows(5);
-        jScrollPane2.setViewportView(textAreaChat);
-
-        panelChat.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        panelUsuarios.setLayout(new java.awt.BorderLayout());
-
-        listadoUsuarios.setFocusable(false);
-        listadoUsuarios.setPreferredSize(new java.awt.Dimension(99, 6));
-        jScrollPane3.setViewportView(listadoUsuarios);
-
-        panelUsuarios.add(jScrollPane3, java.awt.BorderLayout.CENTER);
-
-        panelChat.add(panelUsuarios, java.awt.BorderLayout.LINE_END);
-
-        panelMensaje.setLayout(new java.awt.BorderLayout());
-
-        textAreaMensaje.setColumns(20);
-        textAreaMensaje.setRows(5);
-        jScrollPane1.setViewportView(textAreaMensaje);
-
-        panelMensaje.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        panelBotonEnviar.setLayout(new java.awt.GridLayout(2, 1));
-
-        botonEnviar.setText("   Enviar   ");
-        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEnviarActionPerformed(evt);
-            }
-        });
-        panelBotonEnviar.add(botonEnviar);
-
-        panelMensaje.add(panelBotonEnviar, java.awt.BorderLayout.LINE_END);
-
-        panelChat.add(panelMensaje, java.awt.BorderLayout.PAGE_END);
-
-        getContentPane().add(panelChat, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelConexion, java.awt.BorderLayout.CENTER);
 
         menuConexion.setText("Conexión");
 
@@ -345,6 +355,16 @@ public class Cliente extends javax.swing.JFrame {
         
     }//GEN-LAST:event_botonEnviarActionPerformed
 
+    private void elementSelected(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_elementSelected
+        listadoUsuarios.setSelectedIndex(-1);
+        
+    }//GEN-LAST:event_elementSelected
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        hiloConversacion.desconectar();
+    }//GEN-LAST:event_formWindowClosing
+
+    
     /**
      * @param args the command line arguments
      */
