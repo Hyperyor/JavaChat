@@ -11,16 +11,14 @@ import java.util.Observable;
  *
  * @author alumno
  */
-public class LlegadaMensaje extends Observable{
-    
-    public void nuevoMensaje(String mensaje)
-    {
+public class LlegadaMensaje extends Observable {
+
+    //metodo que recibe un mensaje
+    public void nuevoMensaje(String mensaje) {
         this.setChanged();
-        
-        
+        //y se lo rebota a todos los observadores (todos los usuarios conectados)
         notifyObservers(mensaje);
-        
-        
+
     }
-    
+
 }

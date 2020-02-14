@@ -11,8 +11,8 @@ import java.io.Serializable;
  *
  * @author alumno
  */
-public class Mensaje implements Serializable{
-    
+public class Mensaje implements Serializable {
+
     private String nombreUsuario;
     private String mensaje;
 
@@ -21,8 +21,6 @@ public class Mensaje implements Serializable{
         this.mensaje = mensaje;
     }
 
-    
-    
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -38,7 +36,5 @@ public class Mensaje implements Serializable{
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
-    
-    
+
 }
